@@ -10,9 +10,9 @@ const {
 
 export default Mixin.create({
   recognizers: [
-    ['tap', {threshold: 40}],
-    ['press', {threshold: 60}],
-    ['pan', {threshold: 300}],
+    ['tap'],
+    ['press'],
+    ['pan'],
     ['swipe'],
     ['pinch']
   ],
