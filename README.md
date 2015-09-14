@@ -2,8 +2,6 @@
 
 [Tuio.js](http://fe9lix.github.io/Tuio.js/) Client which recives OSC/TUIO messages from a websocket and transforms those to touch events. The addon ships with a component mixin that integrates hammer.js gestures.
 
-You nead to setup an
-
 Available Gestures:
 - tap
 - doubletap
@@ -44,11 +42,12 @@ const {
 
 export default Component.extend(HammerMixin, {
   recognizers: [
-    // overwrite the default recognizers
+    // define the recognizers you would like to use in this component
     // - first value is the hammer.js recognizer name
-    // - second value is a hammer.js options object
+    // - second value is a hammer.js options hash (leave it blank to use default)
     ['tap', {threshold: 40}],
-	// pinch and rotate are disabled by default because they would make the element blocking
+	['press'],
+	// hammer.js disable pinch and rotate by default, so you have to enable pinch and rotate
 	['pinch', {enable: true}]
   ],
 
@@ -64,7 +63,7 @@ export default Component.extend(HammerMixin, {
 
   pinch: function(event) {
     // act on pinch
-    console.log('pinch');
+    console.log(event);
   }
 });
 ```
