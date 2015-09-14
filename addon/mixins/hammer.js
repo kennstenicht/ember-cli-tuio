@@ -9,14 +9,6 @@ const {
 } = Ember;
 
 export default Mixin.create({
-  recognizers: [
-    ['tap'],
-    ['press'],
-    ['pan'],
-    ['swipe'],
-    ['pinch']
-  ],
-
   setup: on('didInsertElement', function() {
     if (!this.get('recognizers')) {
       return;
