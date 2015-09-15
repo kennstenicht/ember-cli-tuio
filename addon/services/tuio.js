@@ -53,7 +53,9 @@ export default Service.extend({
   },
 
   updateTouches: function(touch) {
-    $('#touch'+touch.identifier).css({'top': touch.pageY, 'left': touch.pageX});
+    Ember.run.throttle(this, function() {
+      $('#touch'+touch.identifier).css({'top': touch.pageY, 'left': touch.pageX});
+    }, 100);
   },
 
   removeTouches: function(touch) {
