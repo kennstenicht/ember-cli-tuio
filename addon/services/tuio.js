@@ -1,6 +1,5 @@
 import Ember from 'ember';
 
-
 const {
   Service,
   $,
@@ -24,6 +23,8 @@ export default Service.extend({
       this.touches.push(touch);
 
       this.createTouchEvent("touchstart", touch);
+
+      if(config.APP.touchDebug) this.addTouches(touch);
     }));
 
     client.on('updateTuioCursor', bind(this, function(cursor) {
@@ -32,6 +33,8 @@ export default Service.extend({
       this.touches[this.touches.indexOf(touch)] = touch;
 
       this.createTouchEvent('touchmove', touch);
+
+      if(config.APP.touchDebug) this.updateTouches(touch);
     }));
 
     client.on('removeTuioCursor', bind(this, function(cursor) {
@@ -40,7 +43,21 @@ export default Service.extend({
       this.touches.splice(this.touches.indexOf(touch), 1);
 
       this.createTouchEvent('touchend', touch);
+
+      if(config.APP.touchDebug) this.removeTouches(touch);
     }));
+  },
+
+  addTouches: function(touch) {
+    $('body').append('<div id="touch' + touch.identifier + '" style="position: absolute; background: rgba(0,0,0,0.2); width: 30px; height: 30px; border-radius: 50%;"></div>');
+  },
+
+  updateTouches: function(touch) {
+    $('#touch'+touch.identifier).css({'top': touch.pageY, 'left': touch.pageX});
+  },
+
+  removeTouches: function(touch) {
+    $('#touch'+touch.identifier).remove();
   },
 
   createTouch: function(cursor) {
