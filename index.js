@@ -12,5 +12,8 @@ module.exports = {
     // Tuio.js
     app.import('vendor/socket.io.js');
     app.import('vendor/Tuio.js');
+  },
+  isDevelopingAddon: function() {
+    return true;
   }
 };
