@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-tuio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tuio.js Client that transforms OSC/TUIO messages to touch events. The addon ships with a component mixin that integrates hammer.js gestures.",
   "directories": {
     "doc": "doc",
