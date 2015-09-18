@@ -12,7 +12,8 @@ export default Service.extend({
   touches: [],
 
   setupClient: function() {
-    var client = new Tuio.Client({
+    let config = this.container.lookupFactory('config:environment'),
+      client = new Tuio.Client({
         host: "http://localhost:5000"
     });
     client.connect();
@@ -24,7 +25,7 @@ export default Service.extend({
 
       this.createTouchEvent("touchstart", touch);
 
-      this.addTouches(touch);
+      if( config.tuioTouchDebug ) this.addTouches(touch);
     }));
 
     client.on('updateTuioCursor', bind(this, function(cursor) {
@@ -34,7 +35,7 @@ export default Service.extend({
 
       this.createTouchEvent('touchmove', touch);
 
-      this.updateTouches(touch);
+      if( config.tuioTouchDebug ) this.updateTouches(touch);
     }));
 
     client.on('removeTuioCursor', bind(this, function(cursor) {
@@ -44,7 +45,7 @@ export default Service.extend({
 
       this.createTouchEvent('touchend', touch);
 
-      this.removeTouches(touch);
+      if( config.tuioTouchDebug ) this.removeTouches(touch);
     }));
   },
 
