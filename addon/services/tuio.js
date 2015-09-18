@@ -20,7 +20,7 @@ export default Service.extend({
 
     client.on('addTuioCursor', bind(this, function(cursor) {
       let touch = this.createTouch(cursor);
-
+      //document.createTouch(window);
       this.touches.push(touch);
 
       this.createTouchEvent("touchstart", touch);
@@ -119,11 +119,11 @@ export default Service.extend({
   },
 
   getClientX: function(point) {
-    return Math.round( point * $(window).width() );
+    return Math.round( point * $(window).innerWidth() );
   },
 
   getClientY: function(point) {
-    return Math.round( point * $(window).height() );
+    return Math.round( point * $(window).innerHeight() );
   },
 
   getScreenX: function(point) {

@@ -47,8 +47,8 @@ export default Component.extend(Gestures, {
   // change default recognizer settings
   // available options are documented in the hammer.js [documentation](http://hammerjs.github.io/recognizer-pan/)
   recognizers: {
-    tap: {threshold: 40},
-    press: {time: 400}
+    press: {time: 400},
+	pinch: {enable: true}
   },
 
   tap: function(event) {
