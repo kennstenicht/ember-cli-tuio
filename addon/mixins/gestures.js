@@ -12,10 +12,10 @@ export default Mixin.create({
   gestures: ['tap', 'doubletap', 'press', 'pan', 'swipe'],
 
   recognizers: {
-    tap: {threshold: 40},
-    press: {time: 400},
-    pan: {threshold: 30, direction: Hammer.DIRECTION_ALL},
-    swipe: {threshold: 120, velocity: 3, direction: Hammer.DIRECTION_ALL},
+    tap: {},
+    press: {},
+    pan: {direction: Hammer.DIRECTION_ALL},
+    swipe: {},
     rotate: {enable: true},
     pinch: {enable: true}
   },
