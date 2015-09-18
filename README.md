@@ -41,15 +41,15 @@ const {
 } = Ember;
 
 export default Component.extend(HammerMixin, {
-  recognizers: [
-    // define the recognizers you would like to use in this component
-    // - first value is the hammer.js recognizer name
-    // - second value is a hammer.js options hash (leave it blank to use default)
-    ['tap', {threshold: 40}],
-	['press'],
-	// hammer.js disable pinch and rotate by default, so you have to enable pinch and rotate
-	['pinch', {enable: true}]
-  ],
+  // allowed gestures in this component (default: tap, doubletap, press, pan, swipe)
+  gestures: ['tap', 'press', 'pinch'],
+
+  // change default recognizer settings
+  // available options are documented in the hammer.js [documentation](http://hammerjs.github.io/recognizer-pan/)
+  recognizers: {
+    tap: {threshold: 40},
+    press: {time: 400}
+  },
 
   tap: function(event) {
     // act on tap
