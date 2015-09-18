@@ -49,7 +49,7 @@ export default Service.extend({
   },
 
   addTouches: function(touch) {
-    $('body').append('<div id="touch' + touch.identifier + '" style="position: absolute; background: rgba(0,0,0,0.2); width: 30px; height: 30px; border-radius: 50%;"></div>');
+    $('body').append('<div id="touch' + touch.identifier + '" style="position: absolute; background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999; top: '+touch.pageY+'px; left: '+ touch.pageX+'px;"></div>');
   },
 
   updateTouches: function(touch) {
