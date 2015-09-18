@@ -14,8 +14,8 @@ Available Gestures:
 
 ### Links
 
-[Getting Started with Hammer.js](http://hammerjs.github.io/getting-started/)
-[Tuio.js](http://fe9lix.github.io/Tuio.js/)
+* [Getting Started with Hammer.js](http://hammerjs.github.io/getting-started/)
+* [Tuio.js](http://fe9lix.github.io/Tuio.js/)
 
 
 ## Installation
@@ -33,14 +33,14 @@ Install and Start [Tuio.js Server](http://fe9lix.github.io/Tuio.js/)
 
 import Ember from 'ember';
 // Import mixin to get hammer.js gestures
-import HammerMixin from 'ember-cli-tuio/mixins/hammer';
+import Gestures from 'ember-cli-tuio/mixins/gestures';
 
 const {
   Component,
   computed
 } = Ember;
 
-export default Component.extend(HammerMixin, {
+export default Component.extend(Gestures, {
   // allowed gestures in this component (default: tap, doubletap, press, pan, swipe)
   gestures: ['tap', 'press', 'pinch'],
 
