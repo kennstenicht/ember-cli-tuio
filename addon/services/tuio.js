@@ -25,7 +25,9 @@ export default Service.extend({
 
       this.createTouchEvent("touchstart", touch);
 
-      if( config.tuioTouchDebug ) this.addTouches(touch);
+      if( config.tuioTouchDebug ) {
+        this.addTouches(touch);
+      }
     }));
 
     client.on('updateTuioCursor', bind(this, function(cursor) {
@@ -35,7 +37,9 @@ export default Service.extend({
 
       this.createTouchEvent('touchmove', touch);
 
-      if( config.tuioTouchDebug ) this.updateTouches(touch);
+      if( config.tuioTouchDebug ) {
+        this.updateTouches(touch);
+      }
     }));
 
     client.on('removeTuioCursor', bind(this, function(cursor) {
@@ -45,7 +49,9 @@ export default Service.extend({
 
       this.createTouchEvent('touchend', touch);
 
-      if( config.tuioTouchDebug ) this.removeTouches(touch);
+      if( config.tuioTouchDebug ) {
+        this.removeTouches(touch);
+      }
     }));
   },
 
@@ -96,7 +102,7 @@ export default Service.extend({
     var targetTouches = [];
     for (var i = 0; i < this.touches.length; i++) {
       var touch = this.touches[i];
-      if (touch.target == element) {
+      if (touch.target === element) {
         targetTouches.push(touch);
       }
     }
