@@ -16,6 +16,7 @@ Available Gestures:
 
 * [Getting Started with Hammer.js](http://hammerjs.github.io/getting-started/)
 * [Tuio.js](http://fe9lix.github.io/Tuio.js/)
+* [Tongseng (TUIO wrapper for Mac OS X multitouch events)](https://github.com/fajran/tongseng)
 
 
 ## Installation
