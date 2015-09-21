@@ -12,61 +12,39 @@ export default Service.extend({
   touches: [],
 
   setupClient: function() {
-    let config = this.container.lookupFactory('config:environment'),
-      client = new Tuio.Client({
+    let client = new Tuio.Client({
         host: "http://localhost:5000"
     });
     client.connect();
 
     client.on('addTuioCursor', bind(this, function(cursor) {
-      let touch = this.createTouch(cursor);
-      //document.createTouch(window);
-      this.touches.push(touch);
-
-      this.createTouchEvent("touchstart", touch);
-
-      if( config.tuioTouchDebug ) {
-        this.addTouches(touch);
-      }
+      this.createTouchEvent("touchstart", cursor);
     }));
 
     client.on('updateTuioCursor', bind(this, function(cursor) {
-      let touch = this.createTouch(cursor);
-
-      this.touches[this.touches.indexOf(touch)] = touch;
-
-      this.createTouchEvent('touchmove', touch);
-
-      if( config.tuioTouchDebug ) {
-        this.updateTouches(touch);
-      }
+      this.createTouchEvent('touchmove', cursor);
     }));
 
     client.on('removeTuioCursor', bind(this, function(cursor) {
-      let touch = this.createTouch(cursor);
-
-      this.touches.splice(this.touches.indexOf(touch), 1);
-
-      this.createTouchEvent('touchend', touch);
-
-      if( config.tuioTouchDebug ) {
-        this.removeTouches(touch);
-      }
+      this.createTouchEvent('touchend', cursor);
     }));
   },
 
-  addTouches: function(touch) {
-    $('body').append('<div id="touch' + touch.identifier + '" style="position: absolute; background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999; top: '+touch.pageY+'px; left: '+ touch.pageX+'px;"></div>');
-  },
+  createTouchEvent: function(eventName, cursor) {
+    let config = this.container.lookupFactory('config:environment'),
+      touch = this.createTouch(cursor),
+      evt = document.createEvent('Event');
 
-  updateTouches: function(touch) {
-    Ember.run.throttle(this, function() {
-      $('#touch'+touch.identifier).css({'top': touch.pageY, 'left': touch.pageX});
-    }, 100);
-  },
+    evt.initEvent(eventName, true, true);
+    evt.touches = this.createTouchList(touch, eventName);
+    evt.targetTouches = this.getTargetTouches(touch.target);
+    evt.changedTouches = [touch];
 
-  removeTouches: function(touch) {
-    $('#touch'+touch.identifier).remove();
+    touch.target.dispatchEvent(evt);
+
+    if( config.tuioTouchDebug ) {
+      this.updateDebugTouches(touch, eventName);
+    }
   },
 
   createTouch: function(cursor) {
@@ -84,19 +62,20 @@ export default Service.extend({
     return data;
   },
 
-  createTouchEvent: function(name, touch) {
-    var evt = document.createEvent('Event');
-    evt.initEvent(name, true, true);
-    evt.touches = this.touches;
-    evt.targetTouches = this.getTargetTouches(touch.target);
-    evt.changedTouches = [touch];
+  createTouchList: function(touch, eventName) {
+    let touches = this.get('touches');
 
-    if (touch.target) {
-      touch.target.dispatchEvent(evt);
-    } else {
-      document.dispatchEvent(evt);
+    if(eventName === 'touchstart') {
+      touches.push(touch);
+    } else if(eventName === 'touchmove') {
+      touches[_.findIndex(touches, 'identifier', touch.identifier)] = touch;
+    } else if(eventName === 'touchend') {
+      touches.splice(_.findIndex(touches, 'identifier',  touch.identifier), 1);
     }
+
+    return touches;
   },
+
 
   getTargetTouches: function(element) {
     var targetTouches = [];
@@ -111,8 +90,8 @@ export default Service.extend({
 
   getElement: function(cursor) {
     return document.elementFromPoint(
-      this.getClientX(cursor.xPos),
-      this.getClientY(cursor.yPos)
+      this.getPageX(cursor.xPos),
+      this.getPageY(cursor.yPos)
     );
   },
 
@@ -138,5 +117,20 @@ export default Service.extend({
 
   getScreenY: function(point) {
     return Math.round( point * screen.height );
+  },
+
+
+  // Debug
+  updateDebugTouches: function(touch, eventName) {
+    if(eventName === 'touchstart') {
+      $('body').append('<div id="touch' + touch.identifier + '" style="position: absolute; background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999; top: '+touch.pageY+'px; left: '+ touch.pageX+'px;"></div>');
+    } else if(eventName === 'touchmove') {
+      $('#touch'+touch.identifier).css({
+        'top': touch.pageY,
+        'left': touch.pageX
+      });
+    } else if(eventName === 'touchend') {
+      $('#touch'+touch.identifier).remove();
+    }
   }
 });
