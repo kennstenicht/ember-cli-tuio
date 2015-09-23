@@ -17,6 +17,7 @@ export default Service.extend({
     });
     client.connect();
 
+    // Tuio Cursors
     client.on('addTuioCursor', bind(this, function(cursor) {
       this.createTouchEvent("touchstart", cursor);
     }));
@@ -28,12 +29,24 @@ export default Service.extend({
     client.on('removeTuioCursor', bind(this, function(cursor) {
       this.createTouchEvent('touchend', cursor);
     }));
+
+    // Tuio Objects
+    client.on('addTuioObject', bind(this, function(object) {
+      this.createObjectEvent("objectadded", object);
+    }));
+
+    client.on('updateTuioObject', bind(this, function(object) {
+      this.createObjectEvent('objectmove', object);
+    }));
+
+    client.on('removeTuioObject', bind(this, function(object) {
+      this.createObjectEvent('objectremoved', object);
+    }));
   },
 
   createTouchEvent: function(eventName, cursor) {
-    let config = this.container.lookupFactory('config:environment'),
-      touch = this.createTouch(cursor),
-      evt = document.createEvent('Event');
+    let touch = this.createTouch(cursor);
+    let evt = document.createEvent('Event');
 
     evt.initEvent(eventName, true, true);
     evt.touches = this.createTouchList(touch, eventName);
@@ -42,22 +55,26 @@ export default Service.extend({
 
     touch.target.dispatchEvent(evt);
 
+
+    // Tuio touch debug mode
+    let config = this.container.lookupFactory('config:environment')
+
     if( config.tuioTouchDebug ) {
       this.updateDebugTouches(touch, eventName);
     }
   },
 
   createTouch: function(cursor) {
-    var data = {};
-
-    data.identifier = cursor.sessionId;
-    data.screenX = this.getScreenX(cursor.xPos);
-    data.screenY = this.getScreenY(cursor.yPos);
-    data.pageX = this.getPageX(cursor.xPos);
-    data.pageY = this.getPageY(cursor.yPos);
-    data.clientX = this.getClientX(cursor.xPos);
-    data.clientY = this.getClientY(cursor.yPos);
-    data.target = this.getElement(cursor);
+    const data = {
+      identifier: cursor.sessionId,
+      screenX: this.getScreenX(cursor.xPos),
+      screenY: this.getScreenY(cursor.yPos),
+      pageX: this.getPageX(cursor.xPos),
+      pageY: this.getPageY(cursor.yPos),
+      clientX: this.getClientX(cursor.xPos),
+      clientY: this.getClientY(cursor.yPos),
+      target: this.getElement(cursor)
+    };
 
     return data;
   },
@@ -76,7 +93,6 @@ export default Service.extend({
     return touches;
   },
 
-
   getTargetTouches: function(element) {
     var targetTouches = [];
     for (var i = 0; i < this.touches.length; i++) {
@@ -88,6 +104,24 @@ export default Service.extend({
     return targetTouches;
   },
 
+
+  // Triggers objects (fiducial) events
+  createObjectEvent: function(eventName, object) {
+    $(this.getElement(object)).trigger({
+      type: eventName,
+      screenX: this.getScreenX(object.xPos),
+      screenY: this.getScreenY(object.yPos),
+      clientX: this.getClientX(object.xPos),
+      clientY: this.getClientY(object.yPos),
+      pageX: this.getPageX(object.xPos),
+      pageY: this.getPageY(object.yPos),
+      symbolId: object.symbolId,
+      tuioObject: object
+    });
+  },
+
+
+  // HELPER
   getElement: function(cursor) {
     return document.elementFromPoint(
       this.getPageX(cursor.xPos),
