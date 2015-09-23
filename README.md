@@ -25,6 +25,21 @@ Available Gestures:
 ember install ember-cli-tuio
 ```
 
+
+## Setup
+
+Add customEvents to application (if ember.js < 1.13.9)
+
+```js
+// app/app.js
+
+customEvents: {
+  objectadded: 'objectAdded',
+  objectmoved: 'objectMoved',
+  objectremoved: 'objectRemoved'
+}
+```
+
 ### Usage
 
 Install and Start [Tuio.js Server](http://fe9lix.github.io/Tuio.js/)
@@ -43,18 +58,19 @@ const {
 
 export default Component.extend(Gestures, {
   // allowed gestures in this component (default: tap, doubletap, press, pan, swipe)
+  // hammer gestures are lowercase (pinchstart NOT pinchStart)
   gestures: ['tap', 'press', 'pinch'],
 
   // change default recognizer settings
   // available options are documented in the hammer.js [documentation](http://hammerjs.github.io/recognizer-pan/)
   recognizers: {
     press: {time: 400},
-	pinch: {enable: true}
+    pinch: {enable: true}
   },
 
   tap: function(event) {
     // act on tap
-	this.$().hide();
+    this.$().hide();
   },
 
   press: function(event) {
@@ -63,8 +79,25 @@ export default Component.extend(Gestures, {
   },
 
   pinch: function(event) {
-    // act on pinch
+    // act on pinchstart, pinchmove & pinchend
     console.log(event);
+  },
+
+
+  // Object/Fiducial events don't need the gestures mixin
+  objectAdded: function(e) {
+    // act if a object is  added to the table
+    if(e.symbolId === 1) {
+      console.log('Object one is added');
+    }
+  },
+
+  objectMoved: function() {
+    // act on move
+  },
+
+  objectRemoved: function() {
+    // act if a object is  removed from the table
   }
 });
 ```
