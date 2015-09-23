@@ -36,7 +36,7 @@ export default Service.extend({
     }));
 
     client.on('updateTuioObject', bind(this, function(object) {
-      this.createObjectEvent('objectmove', object);
+      this.createObjectEvent('objectmoved', object);
     }));
 
     client.on('removeTuioObject', bind(this, function(object) {

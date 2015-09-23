@@ -3,7 +3,7 @@ export function initialize(application) {
   let customEvents = application.get('customEvents') || {};
 
   customEvents['objectadded'] = 'objectAdded';
-  customEvents['objectmove'] = 'objectMove';
+  customEvents['objectmoved'] = 'objectMoved';
   customEvents['objectremoved'] = 'objectRemoved';
 
   application.set('customEvents', customEvents);

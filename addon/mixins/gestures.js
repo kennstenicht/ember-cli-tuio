@@ -15,7 +15,7 @@ export default Mixin.create({
     tap: {},
     press: {},
     pan: {direction: Hammer.DIRECTION_ALL},
-    swipe: {},
+    swipe: {direction: Hammer.DIRECTION_ALL},
     rotate: {enable: true},
     pinch: {enable: true}
   },
