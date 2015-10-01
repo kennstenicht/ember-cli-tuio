@@ -4,7 +4,8 @@ const {
   Service,
   $,
   run: {
-    bind
+    bind,
+    later
   }
 } = Ember;
 
@@ -40,7 +41,9 @@ export default Service.extend({
     }));
 
     client.on('removeTuioObject', bind(this, function(object) {
-      this.createObjectEvent('objectremoved', object);
+      later(this, function() {
+        this.createObjectEvent('objectremoved', object);
+      }, 300);
     }));
   },
 
@@ -57,7 +60,7 @@ export default Service.extend({
 
 
     // Tuio touch debug mode
-    let config = this.container.lookupFactory('config:environment')
+    let config = this.container.lookupFactory('config:environment');
 
     if( config.tuioTouchDebug ) {
       this.updateDebugTouches(touch, eventName);
@@ -152,7 +155,6 @@ export default Service.extend({
   getScreenY: function(point) {
     return Math.round( point * screen.height );
   },
-
 
   // Debug
   updateDebugTouches: function(touch, eventName) {
