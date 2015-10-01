@@ -21,6 +21,14 @@ Available Gestures:
 
 ## Installation
 
+Your Browser neads to allow touch input.
+Chrome
+Go to [chrome://flags/](chrome://flags) and set "Enable touch events" to enabled.
+
+Firefox
+Go to [about:config](about:config) and set "dom.w3c_touch_events.enabled" to enable=(1)
+
+
 ```
 ember install ember-cli-tuio
 ```
