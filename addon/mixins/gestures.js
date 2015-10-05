@@ -25,7 +25,9 @@ export default Mixin.create({
       return;
     }
 
-    this.$().hammer();
+    this.$().hammer({
+      domEvents: true
+    });
 
     this.get('gestures').forEach((gesture) => {
       let options = this.get('recognizers')[gesture];
@@ -35,7 +37,7 @@ export default Mixin.create({
       }
 
       if (typeof this[gesture] === 'function') {
-        this.$().hammer().on(gesture, bind(this, gesture));
+        this.$().on(gesture, bind(this, gesture));
       }
     });
   }),
