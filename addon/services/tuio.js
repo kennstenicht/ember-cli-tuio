@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import HelperElements from 'ember-cli-tuio/mixins/helper-elements';
 
 const {
   Service,
@@ -10,7 +9,7 @@ const {
   }
 } = Ember;
 
-export default Service.extend(HelperElements, {
+export default Service.extend({
   touches: [],
 
   setupClient: function() {
@@ -122,6 +121,39 @@ export default Service.extend(HelperElements, {
       symbolId: object.symbolId,
       tuioObject: object
     });
+  },
+
+
+  // HELPER
+  getElement: function(cursor) {
+    return document.elementFromPoint(
+      this.getPageX(cursor.xPos),
+      this.getPageY(cursor.yPos)
+    );
+  },
+
+  getPageX: function(point) {
+    return this.getClientX(point) + $(window).scrollLeft();
+  },
+
+  getPageY: function(point) {
+    return this.getClientY(point) + $(window).scrollTop();
+  },
+
+  getClientX: function(point) {
+    return Math.round( point * $(window).innerWidth() );
+  },
+
+  getClientY: function(point) {
+    return Math.round( point * $(window).innerHeight() );
+  },
+
+  getScreenX: function(point) {
+    return Math.round( point * screen.width );
+  },
+
+  getScreenY: function(point) {
+    return Math.round( point * screen.height );
   },
 
   // Debug
