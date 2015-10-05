@@ -110,6 +110,12 @@ export default Component.extend(Gestures, {
 });
 ```
 
+### Action helper
+
+This triggers pressAction on press
+
+<div {{action "pressAction" on='press'}}>Press Me!</div>
+
 
 ## Running
 
