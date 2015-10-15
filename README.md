@@ -116,6 +116,17 @@ This triggers pressAction on press
 
 <div {{action "pressAction" on='press'}}>Press Me!</div>
 
+You nead to add the actions to the customEvents object in app.js to use the helper.
+
+```js
+// app/app.js
+
+customEvents: {
+  tap: 'tap',
+  press: 'press',
+  pinchstart: 'pinchStart'
+}
+```
 
 ## Running
 
