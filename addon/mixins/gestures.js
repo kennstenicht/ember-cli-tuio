@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 const {
   Mixin,
+  $,
   on,
   run: {
     bind
@@ -25,7 +26,9 @@ export default Mixin.create({
       return;
     }
 
-    this.$().hammer({
+    this.$().hammer();
+
+    this.$().find('[data-ember-action]').hammer({
       domEvents: true
     });
 

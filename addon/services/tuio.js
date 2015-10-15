@@ -41,9 +41,7 @@ export default Service.extend({
     }));
 
     client.on('removeTuioObject', bind(this, function(object) {
-      later(this, function() {
-        this.createObjectEvent('objectremoved', object);
-      }, 300);
+      this.createObjectEvent('objectremoved', object);
     }));
   },
 
