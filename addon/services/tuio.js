@@ -157,11 +157,10 @@ export default Service.extend({
   // Debug
   updateDebugTouches: function(touch, eventName) {
     if(eventName === 'touchstart') {
-      $('body').append('<div id="touch' + touch.identifier + '" style="position: absolute; background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999; top: '+touch.pageY+'px; left: '+ touch.pageX+'px;"></div>');
+      $('body').append('<div id="touch' + touch.identifier + '" style="transform: translate(' + (touch.pageY - 15) + 'px,' + (touch.pageX - 15) + 'px); background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999;"></div>');
     } else if(eventName === 'touchmove') {
       $('#touch'+touch.identifier).css({
-        'top': touch.pageY,
-        'left': touch.pageX
+        'transform': 'translate(' + (touch.pageX - 15) + 'px, ' + (touch.pageY - 15) + 'px)'
       });
     } else if(eventName === 'touchend') {
       $('#touch'+touch.identifier).remove();
