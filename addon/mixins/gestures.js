@@ -28,7 +28,7 @@ export default Mixin.create({
 
     this.$().hammer();
 
-    this.$().find('[data-ember-action]').hammer({
+    this.$().hammer({
       domEvents: true
     });
 
@@ -37,22 +37,6 @@ export default Mixin.create({
 
       if (options) {
         this.$().data('hammer').get(gesture).set(options);
-      }
-
-      if (typeof this[gesture] === 'function') {
-        this.$().on(gesture, bind(this, gesture));
-      }
-    });
-  }),
-
-  teardown: on('willDestroyElement', function() {
-    if (!this.get('gestures')) {
-      return;
-    }
-
-    this.get('gestures').forEach((gesture) => {
-      if (typeof this[gesture] === 'function') {
-        this.$().off(gesture, bind(this, gesture));
       }
     });
   })
