@@ -124,10 +124,12 @@ export default Service.extend({
 
   // HELPER
   getElement: function(cursor) {
-    return document.elementFromPoint(
+    let elements = document.elementsFromPoint(
       this.getPageX(cursor.xPos),
       this.getPageY(cursor.yPos)
     );
+
+    return ( $(elements[0]).hasClass('touch') ) ? elements[1] : elements[0];;
   },
 
   getPageX: function(point) {
@@ -157,7 +159,7 @@ export default Service.extend({
   // Debug
   updateDebugTouches: function(touch, eventName) {
     if(eventName === 'touchstart') {
-      $('body').append('<div id="touch' + touch.identifier + '" style="transform: translate(' + (touch.pageY - 15) + 'px,' + (touch.pageX - 15) + 'px); background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999;"></div>');
+      $('body').append('<div class="touch" id="touch' + touch.identifier + '" style="transform: translate(' + (touch.pageY - 15) + 'px,' + (touch.pageX - 15) + 'px); background: rgba(215,61,47,0.3); width: 30px; height: 30px; border-radius: 50%; z-index:999;"></div>');
     } else if(eventName === 'touchmove') {
       $('#touch'+touch.identifier).css({
         'transform': 'translate(' + (touch.pageX - 15) + 'px, ' + (touch.pageY - 15) + 'px)'
